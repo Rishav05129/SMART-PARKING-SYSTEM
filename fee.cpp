@@ -31,10 +31,10 @@ public:
     void display()
     {
         cout << "\n===== PARKING DETAILS =====\n";
-        cout << "Vehicle : " << vehicle << endl;
-        cout << "Slot    : " << slot << endl;
-        cout << "Hours   : " << hours << endl;
-        cout << "Fee     : Rs. " << fee << endl;
+        cout << "Vehicle: " << vehicle << endl;
+        cout << "Slot: " << slot << endl;
+        cout << "Hours: " << hours << endl;
+        cout << "Fee: Rs. " << fee << endl;
     }
 };
 
