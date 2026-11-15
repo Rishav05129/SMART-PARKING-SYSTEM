@@ -1,0 +1,50 @@
+1|Paltan Bazaar Parking|Paltan Bazaar, Dehradun|60|57
+2|Clock Tower Parking|Ghantaghar, Dehradun|80|80
+3|Railway Station Parking|Railway Station Road, Dehradun|100|100
+4|ISBT Parking|ISBT, Dehradun|120|120
+5|Mall of Dehradun Parking|Rajpur Road, Dehradun|150|150
+6|Rajpur Road Parking|Rajpur Road, Dehradun|70|70
+7|Parade Ground Parking|Parade Ground, Dehradun|200|200
+8|Race Course Parking|Race Course, Dehradun|50|50
+9|Astley Hall Parking|Astley Hall, Dehradun|40|40
+10|Dilaram Chowk Parking|Dilaram Chowk, Dehradun|35|35
+11|Saharanpur Chowk Parking|Saharanpur Chowk, Dehradun|45|45
+12|Survey Chowk Parking|Survey Chowk, Dehradun|55|55
+13|Laxman Chowk Parking|Laxman Chowk, Dehradun|30|30
+14|Hathibarkala Parking|Hathibarkala, Dehradun|25|25
+15|Ballupur Chowk Parking|Ballupur, Dehradun|40|40
+16|Premnagar Market Parking|Premnagar, Dehradun|50|50
+17|Clement Town Parking|Clement Town, Dehradun|60|60
+18|Sahastradhara Road Parking|Sahastradhara Road, Dehradun|70|70
+19|FRI Gate Parking|Forest Research Institute, Dehradun|90|90
+20|Dalanwala Parking|Dalanwala, Dehradun|35|35
+21|Kaulagarh Road Parking|Kaulagarh Road, Dehradun|45|45
+22|Haridwar Road Parking|Haridwar Road, Dehradun|65|65
+23|Raipur Road Parking|Raipur Road, Dehradun|55|55
+24|Vasant Vihar Parking|Vasant Vihar, Dehradun|30|30
+25|Patel Nagar Parking|Patel Nagar, Dehradun|40|40
+26|Nehru Colony Parking|Nehru Colony, Dehradun|35|35
+27|Karanpur Parking|Karanpur, Dehradun|30|30
+28|Mussoorie Road Parking|Mussoorie Road, Dehradun|75|75
+29|Rispana Bridge Parking|Rispana, Dehradun|25|25
+30|Jakhan Parking|Jakhan, Dehradun|30|30
+31|IT Park Parking|IT Park, Sahastradhara Road, Dehradun|110|110
+32|Mothrowala Parking|Mothrowala, Dehradun|40|40
+33|Bhaniyawala Parking|Bhaniyawala, Dehradun|35|35
+34|Doiwala Parking|Doiwala, Dehradun|50|50
+35|Selaqui Parking|Selaqui, Dehradun|60|60
+36|Sahaspur Parking|Sahaspur, Dehradun|45|45
+37|Gandhi Park Parking|Gandhi Park, Dehradun|40|40
+38|Subhash Nagar Parking|Subhash Nagar, Dehradun|50|50
+39|Niranjanpur Mandi Parking|Niranjanpur, Dehradun|100|100
+40|Chakrata Road Parking|Chakrata Road, Dehradun|55|55
+41|Ajabpur Parking|Ajabpur, Dehradun|35|35
+42|Turner Road Parking|Turner Road, Dehradun|30|30
+43|Connaught Place Parking|Connaught Place, Dehradun|45|45
+44|Rajpur Metro Parking|Rajpur, Dehradun|40|40
+45|Lakhibagh Parking|Lakhibagh, Dehradun|30|30
+46|Bindal Parking|Bindal, Dehradun|35|35
+47|Indira Nagar Parking|Indira Nagar, Dehradun|40|40
+48|Balliwala Chowk Parking|Balliwala Chowk, Dehradun|60|60
+49|Pacific Mall Parking|Subhash Nagar, Dehradun|130|130
+50|Doon Hospital Parking|Gandhi Road, Dehradun|80|80
