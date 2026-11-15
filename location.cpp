@@ -1,120 +1,205 @@
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <vector>
 #include <string>
-#include <iomanip>
+#include <cstdlib>
 using namespace std;
-struct Parking {
-    string name;
-    int total;
-    int available;
+struct Location {
+    int id;
+    string name, address;
+    int total, available;
 };
-int main() {
-    Parking p[40] = {
-        {"City Mall",50,20},
-        {"Metro Parking",30,15},
-        {"Parade Ground",100,45},
-        {"Tibetan Market",40,18},
-        {"Ashley Hall",60,25},
-        {"ISBT Parking",80,30},
-        {"Railway Station",70,22},
-        {"Clock Tower",50,12},
-        {"Rajpur Road",60,35},
-        {"Dharampur",50,20},
-        {"Ballupur",40,15},
-        {"Prem Nagar",50,25},
-        {"Patel Nagar",60,30},
-        {"GMS Road",50,20},
-        {"EC Road",40,15},
-        {"Dalanwala",30,10},
-        {"Race Course",50,20},
-        {"Transport Nagar",80,35},
-        {"Saharanpur Road",60,25},
-        {"Chakrata Road",50,20},
-        {"Dilaram Chowk",40,18},
-        {"Kishan Nagar",30,12},
-        {"Raipur Road",60,25},
-        {"Jogiwala",40,15},
-        {"Mothrowala",30,10},
-        {"Rispana Bridge",50,20},
-        {"Prince Chowk",40,15},
-        {"Darshan Lal Chowk",30,10},
-        {"Bindal Bridge",40,15},
-        {"Sahastradhara Road",60,25},
-        {"Survey Chowk",40,18},
-        {"Kabul House",30,12},
-        {"Kanak Chowk",40,15},
-        {"Rangers Ground",50,20},
-        {"Niranjanpur",40,15},
-        {"Selaqui",60,25},
-        {"Sahastradhara Crossing",30,10},
-        {"Old Bus Stand",50,20},
-        {"Vasant Vihar",40,15},
-        {"Subhash Road",30,12}
-    };
-    int choice;
-    cout << "\n============================================\n";
-    cout << "       DEHRADUN SMART PARKING SYSTEM\n";
-    cout << "============================================\n";
-    cout << "\n1. Vehicle Registration";
-    cout << "\n2. Vehicle Exit";
-    cout << "\n3. Smart Parking Dashboard";
-    cout << "\n4. Exit";
-    cout << "\n\nSelect Your Service: ";
-    cin >> choice;
-    if (choice == 3) {
-        int totalSlots = 0;
-        int availableSlots = 0;
-        cout << "\n";
-        cout << "============================================\n";
-        cout << "          SMART PARKING DASHBOARD\n";
-        cout << "============================================\n";
-        for (int i = 0; i < 40; i++) {
-            int occupied = p[i].total - p[i].available;
-            totalSlots += p[i].total;
-            availableSlots += p[i].available;
-            double percentage =
-                (p[i].available * 100.0) / p[i].total;
-            string status;
-            if (p[i].available == 0)
-                status = "FULL";
-            else if (percentage < 30)
-                status = "LIMITED";
-            else
-                status = "AVAILABLE";
-            cout << "\n--------------------------------------------\n";
-            cout << "PARKING ID       : DD-" << setw(3)
-                 << setfill('0') << i + 1 << setfill(' ') << endl;
-            cout << "LOCATION         : " << p[i].name << endl;
-            cout << "TOTAL CAPACITY   : " << p[i].total << endl;
-            cout << "OCCUPIED SLOTS   : " << occupied << endl;
-            cout << "FREE SLOTS       : " << p[i].available << endl;
-            cout << "AVAILABILITY     : "
-                 << fixed << setprecision(1)
-                 << percentage << "%" << endl;
-            cout << "PARKING STATUS   : " << status << endl;
+static const string LOC_FILE = "locations.txt";
+static vector<Location> locs;
+int readInt(const string &prompt) {
+    string s;
+    while (true) {
+        cout << prompt;
+        if (!getline(cin, s)) exit(0);
+        try {
+            size_t pos;
+            int v = stoi(s, &pos);
+            if (pos == s.size()) return v;
+        } catch (...) {}
+        cout << "Invalid number, dobara try karo.\n";
+    }
+}
+string readLine(const string &prompt) {
+    string s;
+    while (true) {
+        cout << prompt;
+        if (!getline(cin, s)) exit(0);
+        if (!s.empty()) return s;
+        cout << "Khali input allowed nahi hai.\n";
+    }
+}
+void saveLocations() {
+    ofstream f(LOC_FILE);
+    for (auto &l : locs)
+        f << l.id << '|' << l.name << '|' << l.address << '|' << l.total << '|' << l.available << '\n';
+}
+void loadLocations() {
+    locs.clear();
+    ifstream f(LOC_FILE);
+    string line;
+    while (getline(f, line)) {
+        if (line.empty()) continue;
+        stringstream ss(line);
+        string a, b, c, d, e;
+        getline(ss, a, '|'); getline(ss, b, '|'); getline(ss, c, '|');
+        getline(ss, d, '|'); getline(ss, e, '|');
+        try {
+            locs.push_back({stoi(a), b, c, stoi(d), stoi(e)});
+        } catch (...) {}
+    }
+}
+Location *findLocation(int id) {
+    for (auto &l : locs)
+        if (l.id == id) return &l;
+    return nullptr;
+}
+bool hasFreeSlot(int locId) {
+    Location *l = findLocation(locId);
+    return l && l->available > 0;
+}
+bool vehicleEntered(int locId) {
+    Location *l = findLocation(locId);
+    if (!l || l->available <= 0) return false;
+    l->available--;
+    saveLocations();
+    return true;
+}
+bool vehicleExited(int locId) {
+    Location *l = findLocation(locId);
+    if (!l || l->available >= l->total) return false;
+    l->available++;
+    saveLocations();
+    return true;
+}
+int nextId() {
+    int mx = 0;
+    for (auto &l : locs) mx = max(mx, l.id);
+    return mx + 1;
+}
+void viewLocations() {
+    cout << "\nPARKING LOCATIONS\n";
+    if (locs.empty()) {
+        cout << "Koi location nahi hai.\n";
+        return;
+    }
+    for (auto &l : locs) {
+        cout << "\nLocation " << l.id << ": " << l.name << "\n"
+             << "Address: " << l.address << "\n"
+             << "Total Slots: " << l.total << "\n"
+             << "Available Slots: " << l.available << "\n";
+    }
+}
+void addLocation() {
+    Location l;
+    l.id = nextId();
+    l.name = readLine("Location Name: ");
+    l.address = readLine("Address: ");
+    do {
+        l.total = readInt("Total Slots: ");
+        if (l.total <= 0) cout << "Slots 0 se zyada hone chahiye.\n";
+    } while (l.total <= 0);
+    l.available = l.total;
+    locs.push_back(l);
+    saveLocations();
+    cout << "Location add ho gayi (ID " << l.id << ").\n";
+}
+void editLocation() {
+    viewLocations();
+    if (locs.empty()) return;
+    Location *l = findLocation(readInt("\nEdit karne ke liye Location ID: "));
+    if (!l) { cout << "Location nahi mili.\n"; return; }
+    l->name = readLine("New Name: ");
+    l->address = readLine("New Address: ");
+    int occupied = l->total - l->available;
+    int t;
+    do {
+        t = readInt("New Total Slots: ");
+        if (t < occupied)
+            cout << "Abhi " << occupied << " vehicles parked hain, total isse kam nahi ho sakta.\n";
+    } while (t < occupied || t <= 0);
+    l->total = t;
+    l->available = t - occupied;
+    saveLocations();
+    cout << "Location update ho gayi.\n";
+}
+void deleteLocation() {
+    viewLocations();
+    if (locs.empty()) return;
+    int id = readInt("\nDelete karne ke liye Location ID: ");
+    for (size_t i = 0; i < locs.size(); i++) {
+        if (locs[i].id == id) {
+            if (locs[i].available != locs[i].total) {
+                cout << "Is location par vehicles parked hain, delete nahi ho sakti.\n";
+                return;
+            }
+            locs.erase(locs.begin() + i);
+            saveLocations();
+            cout << "Location delete ho gayi.\n";
+            return;
         }
-        cout << "\n============================================\n";
-        cout << "          CITY PARKING SUMMARY\n";
-        cout << "============================================\n";
-        cout << "TOTAL LOCATIONS   : 40\n";
-        cout << "TOTAL SLOTS       : " << totalSlots << endl;
-        cout << "OCCUPIED SLOTS    : "
-             << totalSlots - availableSlots << endl;
-        cout << "AVAILABLE SLOTS   : " << availableSlots << endl;
-        cout << "============================================\n";
-        cout << "       DEHRADUN SMART PARKING SYSTEM\n";
-        cout << "============================================\n";
     }
-    else if (choice == 1) {
-        cout << "\nVehicle Registration Selected!\n";
-    }
-    else if (choice == 2) {
-        cout << "\nVehicle Exit Selected!\n";
-    }
-    else if (choice == 4) {
-        cout << "\nThank You For Using Smart Parking!\n";
-    }
-    else {
-        cout << "\nInvalid Service Selection!\n";
-    }
+    cout << "Location nahi mili.\n";
+}
+void manageLocations() {
+    int ch;
+    do {
+        cout << "\n--- MANAGE PARKING LOCATIONS ---\n"
+             << "1. View Locations\n2. Add Location\n3. Edit Location\n"
+             << "4. Delete Location\n0. Back\n";
+        ch = readInt("Enter Your Choice: ");
+        switch (ch) {
+            case 1: viewLocations(); break;
+            case 2: addLocation(); break;
+            case 3: editLocation(); break;
+            case 4: deleteLocation(); break;
+            case 0: break;
+            default: cout << "Galat choice.\n";
+        }
+    } while (ch != 0);
+}
+void vehicleMenu() {
+    int ch;
+    do {
+        cout << "\n--- VEHICLE ENTRY & EXIT ---\n"
+             << "1. Vehicle Entry\n2. Vehicle Exit\n0. Back\n";
+        ch = readInt("Enter Your Choice: ");
+        if (ch == 1 || ch == 2) {
+            int id = readInt("Location ID: ");
+            if (ch == 1) {
+                if (vehicleEntered(id))
+                    cout << "Entry ho gayi. Available slots: " << findLocation(id)->available << "\n";
+                else
+                    cout << "Entry fail: location galat hai ya parking full hai.\n";
+            } else {
+                if (vehicleExited(id))
+                    cout << "Exit ho gayi. Available slots: " << findLocation(id)->available << "\n";
+                else
+                    cout << "Exit fail: location galat hai ya koi vehicle parked nahi.\n";
+            }
+        }
+    } while (ch != 0);
+}
+int main() {
+    loadLocations();
+    int ch;
+    do {
+        cout << "\n===== PARKING MANAGEMENT SYSTEM =====\n"
+             << "1. Manage Parking Locations\n"
+             << "2. Vehicle Entry & Exit Details\n"
+             << "0. Exit\n";
+        ch = readInt("Enter Your Choice: ");
+        switch (ch) {
+            case 1: manageLocations(); break;
+            case 2: vehicleMenu(); break;
+            case 0: cout << "Thank you!\n"; break;
+            default: cout << "Galat choice.\n";
+        }
+    } while (ch != 0);
     return 0;
 }
