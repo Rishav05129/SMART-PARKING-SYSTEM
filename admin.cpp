@@ -239,12 +239,14 @@ int main() {
     do {
         cout << "\n1. Admin Login\n2. Exit Program\nEnter Your Choice: ";
         choice = (int)getNumber();
-        switch (choice) {
+        switch (choice) 
+        {
             case 1: adminPanel(); break;
             case 2: cout << "Thank You!\n"; break;
             default: cout << "Invalid Choice!\n";
         }
-    } while (choice != 2);
+    }
+    while (choice != 2);
     freeList();
     return 0;
 }
